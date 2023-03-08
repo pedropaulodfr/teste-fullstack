@@ -27,11 +27,21 @@ function CadastroCliente() {
 
     const handleSalvarCliente = () => {
         console.log({nome, celular, status, dataNascimento, CEP, endereco, numero, complemento, bairro, cidade, uf});
+        
+        if (status == "ativo") {
+            var statusBoolean = 1
+        } else {
+            var statusBoolean = 0
+        }
+
+        const listaPessoasString = localStorage.getItem("listaPessoas")
+        const listaPessoas = JSON.parse(listaPessoasString)
 
         const novoCliente = {
+            id: listaPessoas.length + 1,
             nome: nome,
             celular: celular,
-            status: status,
+            status: statusBoolean,
             dataNascimento: dataNascimento,
             CEP: CEP,
             endereco: endereco,
@@ -41,16 +51,16 @@ function CadastroCliente() {
             cidade: cidade,
             uf: uf
         }
-
-        const listaPessoasString = localStorage.getItem("listaPessoas")
-        const listaPessoas = JSON.parse(listaPessoasString)
-
+        
         listaPessoas.push(novoCliente)
 
         const listaPessoasAtualizada = JSON.stringify(listaPessoas)
         localStorage.setItem("listaPessoas", listaPessoasAtualizada)
 
         console.log(listaPessoas);
+
+        alert("Dados salvos!")
+        
     }
 
 
