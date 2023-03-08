@@ -1,0 +1,21 @@
+.home-container{
+    width: 100vw;
+}
+
+.component-lista-clientes{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Open Sans', sans-serif;
+
+}
+
+.component-cadastra-cliente{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Open Sans', sans-serif;
+
+}

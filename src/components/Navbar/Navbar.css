@@ -1,0 +1,50 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #102F59 ;
+    width: 100vw;
+    height: 8vh;
+    font-family: 'Open Sans', sans-serif;
+    color: #ffffff;
+}
+
+.logo-content {
+    display: flex;
+    align-items: center;
+    margin: 20px;
+    width: 100px;
+}
+
+.logo-content img {
+    width: 70px;
+}
+
+.username-logout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nome-usuario-content{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 300px;
+    font-size: .7em;
+}
+
+.logout-content {
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-left: 40px;
+    margin-right: 25px;
+    color: #ffffff;
+    outline: none;
+}
+
+.logout-btn{
+    text-decoration: none;
+    outline: none;
+    color: #ffffff;
+}
+

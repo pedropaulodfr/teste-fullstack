@@ -1,0 +1,29 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.Container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-family: 'Open Sans', sans-serif;
+  font-size: .4em;
+  color: #777777;
+  padding: 50px;
+}
+
+.logoCSJ{
+  width: 200px;
+}
+

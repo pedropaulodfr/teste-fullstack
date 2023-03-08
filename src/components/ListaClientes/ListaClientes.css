@@ -1,0 +1,57 @@
+.lista-header{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 80px;
+    color: #4B9738;
+    font-size: .8em;
+    width: 80vw;
+}
+
+.cadastrar-novo-btn{
+    background-color: #4B9738;
+    border: none;
+    width: 120px;
+    height: 30px;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.lista-clientes-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    margin-top: 30px;
+    border-radius: 7px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.08);
+}
+
+.lista-body{
+    display: flex;
+    width: 80vw;
+}
+
+.lista-top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 70vw;
+}
+
+.lista-top input[type="text"]{
+    outline: none;
+    border: solid 1px #777777;
+    width: 250px;
+    height: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.clientes-title{
+    margin-left: 10px;
+}
+

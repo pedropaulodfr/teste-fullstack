@@ -1,0 +1,59 @@
+.tabela-clientes{
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+}
+
+table {
+    text-align: justify;
+}
+
+tr, td, th {
+    padding: 13px;
+}
+
+th {
+    color: #9FA2B4;
+}
+
+.statusAtivo {
+    font-size: 1em;
+    border-radius: 40px;
+    width: 80px;
+    height: 25px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #219653;
+}
+
+.statusInativo {
+    font-size: 1em;
+    border-radius: 40px;
+    width: 80px;
+    height: 25px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #BDBDBD;
+    
+}
+
+.editar-btn {
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    background-color: #256789;
+    cursor: pointer;
+}
+
+.excluir-btn {
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    color: #ffffff;
+    background-color: #B41616;
+    cursor: pointer;
+}
