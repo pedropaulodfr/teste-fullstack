@@ -3,6 +3,15 @@ import './TabelaClientes.css';
 
 function TabelaClientes( {listaPessoas} ) {
 
+    const handleExcluirCliente = (clienteId) => {
+        listaPessoas.splice(clienteId - 1, 1)
+        
+        const listaPessoasAtualizada = JSON.stringify(listaPessoas)
+        localStorage.setItem("listaPessoas", listaPessoasAtualizada)
+        
+        alert("Cliente removido!")
+    }
+
     return(
         <>
             <div className="tabela-clientes">
@@ -30,8 +39,15 @@ function TabelaClientes( {listaPessoas} ) {
                                     </h2>
                                 </td>
                                 <td>
-                                    <button className="editar-btn">Editar</button>
-                                    <button className="excluir-btn">Excluir</button>
+                                    <button 
+                                        className="editar-btn">
+                                        Editar
+                                    </button>
+                                    <button 
+                                        className="excluir-btn" 
+                                        onClick={() => handleExcluirCliente(pessoa.id)}>
+                                        Excluir
+                                    </button>
                                 </td>
                             </tr>
                         ))}
