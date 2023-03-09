@@ -1,0 +1,24 @@
+.confirmar-btn {
+    font-size: .9em;
+    border: none;
+    border-radius: 3px;
+    width:80px;
+    height: 30px;
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: #4B9738;
+}
+
+.cancelar-btn {
+    font-size: .9em;
+    border: none;
+    border-radius: 3px;
+    width: 80px;
+    height: 30px;
+    text-align: center;
+    margin-left: 10px;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: #B9B9B9;
+}

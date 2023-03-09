@@ -1,7 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
+import ModalConfirmacao from '../ModalConfirmacao/ModalConfirmacao';
 import './TabelaClientes.css';
 
 function TabelaClientes( {listaPessoas} ) {
+
+    const [showModal, setShowModal] = useState(false);
 
     const handleExcluirCliente = (clienteId) => {
 
@@ -53,9 +57,16 @@ function TabelaClientes( {listaPessoas} ) {
                                     </button>
                                     <button 
                                         className="excluir-btn" 
-                                        onClick={() => handleExcluirCliente(pessoa.id)}>
+                                        onClick={() => setShowModal(true)}>
                                         Excluir
                                     </button>
+                                    {showModal && (
+                                        <ModalConfirmacao 
+                                            message="Tem certeza que deseja excluir?" 
+                                            onConfirm={() => handleExcluirCliente(pessoa.id)} 
+                                            onCancel={() => setShowModal(false)}
+                                        />
+                                    )}
                                 </td>
                             </tr>
                         ))}
