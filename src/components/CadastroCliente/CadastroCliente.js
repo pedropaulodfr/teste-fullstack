@@ -22,7 +22,39 @@ function CadastroCliente() {
     const [bairro, setBairro] = useState("")
     const [cidade, setCidade] = useState("")
     const [uf, setUf] = useState("")
+
+   
+    const handleMascaras = () => {
+        const inputCelular = document.querySelector("input.input-celular")
+        
+        inputCelular.addEventListener("keypress", () => {
+            let inputLength = inputCelular.value.length
     
+            if (inputLength === 0) {
+                inputCelular.value += '('
+            }
+            if (inputLength === 3) {
+                inputCelular.value += ') '
+            }
+            if (inputLength === 6) {
+                inputCelular.value += ' '
+            }
+            if (inputLength === 11) {
+                inputCelular.value += '-'
+            }
+        })
+
+
+        const inputCEP = document.querySelector("input.input-CEP")
+        inputCEP.addEventListener("keypress", () => {
+            let inputLength = inputCEP.value.length
+
+            if (inputLength === 5) {
+                inputCEP.value += '-'
+            }
+        })
+    }
+
     const handleSalvarCliente = () => {
         console.log({nome, celular, status, dataNascimento, CEP, endereco, numero, complemento, bairro, cidade, uf});
         
@@ -108,8 +140,11 @@ function CadastroCliente() {
                         <input 
                             type="text" 
                             placeholder="Celular"
+                            className="input-celular"
+                            maxLength="16"
                             value={celular} 
                             onChange={e => setCelular(e.target.value)} 
+                            onClick={handleMascaras}
                         />
                         <select 
                             name="Status"
@@ -138,8 +173,11 @@ function CadastroCliente() {
                         <input 
                             type="text" 
                             placeholder="CEP" 
+                            className="input-CEP"
+                            maxLength="9"
                             value={CEP} 
                             onChange={e => setCEP(e.target.value)}
+                            onClick={handleMascaras}
                         />
                         <input 
                             type="text" 
@@ -174,6 +212,7 @@ function CadastroCliente() {
                         <input 
                             type="text" 
                             placeholder="UF"
+                            maxLength="2"
                             value={uf} 
                             onChange={e => setUf(e.target.value)}
                         />
