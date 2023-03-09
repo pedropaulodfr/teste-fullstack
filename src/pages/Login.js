@@ -11,8 +11,8 @@ function Login () {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const [emailErr, setEmailErr] = useState(false)
-  const [passwordErr, setPasswordErr] = useState(false)
+
+  const [showErrorMessage, setShowErrorMessage] = useState(false)
 
   console.log({email, password});
 
@@ -23,6 +23,8 @@ function Login () {
       
       if (listaUsuarios[i].email === email && listaUsuarios[i].senha === password) {
         navigate('/home')
+      } else {
+        setShowErrorMessage(true)
       }
     }
   }
@@ -52,7 +54,6 @@ function Login () {
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
-            {emailErr && <p>E-mail inválido!</p>}
         </div>
 
         <div className='inputs-login'>
@@ -62,8 +63,9 @@ function Login () {
             value={password}
             onChange={e => setPassword(e.target.value)}
             />
-            {passwordErr && <p>Senha inválida!</p>}
         </div>
+
+        {showErrorMessage && <div className="error-message">E-mail ou senha incorretos</div>}
 
         <button className='form-btn' onClick={handleLogin}>Entrar</button>
 

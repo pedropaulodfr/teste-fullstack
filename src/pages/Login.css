@@ -38,6 +38,10 @@
     height: 25px;
     margin: 10px;
   }
+
+  .error-message {
+    color: red;
+  }
   
   .form-btn{
     background-color: #4B9738;
