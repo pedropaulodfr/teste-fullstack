@@ -1,10 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
+import { useNavigate  } from 'react-router-dom';
 import logoCSJ from '../assets/logo.png'
 import './Login.css'
 
 function Login () {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
@@ -14,7 +17,14 @@ function Login () {
   console.log({email, password});
 
   const handleLogin = () => {
-    alert(email + " | " + password)
+    const listaUsuariosString = localStorage.getItem("listaUsuarios")
+    const listaUsuarios = JSON.parse(listaUsuariosString)
+    for (let i = 0; i < listaUsuarios.length; i++) {
+      
+      if (listaUsuarios[i].email === email && listaUsuarios[i].senha === password) {
+        navigate('/home')
+      }
+    }
   }
 
   return (
@@ -55,9 +65,7 @@ function Login () {
             {passwordErr && <p>Senha inválida!</p>}
         </div>
 
-        <Link className='login-form-btn' to="/home">
-          <button className='form-btn' onClick={handleLogin}>Entrar</button>
-        </Link>
+        <button className='form-btn' onClick={handleLogin}>Entrar</button>
 
       </div>
       
