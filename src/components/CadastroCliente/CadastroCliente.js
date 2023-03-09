@@ -7,14 +7,12 @@ import '../ListaClientes/ListaClientes'
 function CadastroCliente() {
 
     const currentDate = new Date();
-
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formatter = new Intl.DateTimeFormat('pt-BR', options);
-
     const formattedDate = formatter.format(currentDate);
 
     const [nome, setNome] = useState("")
-    const [celular, setCelular] = useState("")
+    let [celular, setCelular] = useState("")
     const [status, setStatus] = useState("")
     const [dataNascimento, setDataNascimento] = useState("")
     const [CEP, setCEP] = useState("")
@@ -24,15 +22,37 @@ function CadastroCliente() {
     const [bairro, setBairro] = useState("")
     const [cidade, setCidade] = useState("")
     const [uf, setUf] = useState("")
-
+    
     const handleSalvarCliente = () => {
         console.log({nome, celular, status, dataNascimento, CEP, endereco, numero, complemento, bairro, cidade, uf});
         
+        if (celular == "") {
+            celular = "Não Informado"
+        } 
+
         if (status == "ativo") {
             var statusBoolean = 1
         } else {
             var statusBoolean = 0
         }
+        
+        const data = new Date(dataNascimento)
+        let dia = data.getDate()
+        let mes = data.getMonth()
+
+        if ((dia + 1) < 10) {
+            dia = "0" + (dia + 1)
+        } else {
+            dia++
+        }
+
+        if ((mes + 1) < 10) {
+            mes = "0" + (mes + 1)
+        } else {
+            mes++
+        }
+
+        const dataNascimentoFormatada = `${dia}/${mes}/${data.getFullYear()}`
 
         const listaPessoasString = localStorage.getItem("listaPessoas")
         const listaPessoas = JSON.parse(listaPessoasString)
@@ -42,7 +62,7 @@ function CadastroCliente() {
             nome: nome,
             celular: celular,
             status: statusBoolean,
-            dataNascimento: dataNascimento,
+            dataNascimento: dataNascimentoFormatada,
             CEP: CEP,
             endereco: endereco,
             numero: numero,

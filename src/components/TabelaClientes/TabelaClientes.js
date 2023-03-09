@@ -4,7 +4,15 @@ import './TabelaClientes.css';
 function TabelaClientes( {listaPessoas} ) {
 
     const handleExcluirCliente = (clienteId) => {
-        listaPessoas.splice(clienteId - 1, 1)
+
+        for (let i = 0; i < listaPessoas.length; i++) {
+            const pessoa = listaPessoas[i];
+          
+            if (pessoa.id === clienteId) {
+                listaPessoas.splice(i, 1)
+              break; 
+            }
+          }
         
         const listaPessoasAtualizada = JSON.stringify(listaPessoas)
         localStorage.setItem("listaPessoas", listaPessoasAtualizada)
