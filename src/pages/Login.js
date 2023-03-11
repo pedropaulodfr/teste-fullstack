@@ -22,6 +22,7 @@ function Login () {
     for (let i = 0; i < listaUsuarios.length; i++) {
       
       if (listaUsuarios[i].email === email && listaUsuarios[i].senha === password) {
+        localStorage.setItem("usuarioLogado", listaUsuarios[i].nome)
         navigate('/home')
       } else {
         setShowErrorMessage(true)

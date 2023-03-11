@@ -8,7 +8,6 @@ function TabelaClientes( {listaPessoas} ) {
     const [showModal, setShowModal] = useState(false);
 
     const handleExcluirCliente = (clienteId) => {
-
         for (let i = 0; i < listaPessoas.length; i++) {
             const pessoa = listaPessoas[i];
           
@@ -17,9 +16,9 @@ function TabelaClientes( {listaPessoas} ) {
               break; 
             }
           }
-        
-        const listaPessoasAtualizada = JSON.stringify(listaPessoas)
-        localStorage.setItem("listaPessoas", listaPessoasAtualizada)
+
+        const listaPessoasAtualizadaString = JSON.stringify(listaPessoas)
+        localStorage.setItem("listaPessoas", listaPessoasAtualizadaString)
         
         alert("Cliente removido!")
     }
@@ -50,22 +49,24 @@ function TabelaClientes( {listaPessoas} ) {
                                     }
                                     </h2>
                                 </td>
-                                <td>
+                                <td style={{ position: "relative" }}>
                                     <button 
                                         className="editar-btn">
                                         Editar
                                     </button>
                                     <button 
                                         className="excluir-btn" 
-                                        onClick={() => setShowModal(true)}>
+                                        onClick={() => setShowModal(pessoa.id)}>
                                         Excluir
                                     </button>
-                                    {showModal && (
-                                        <ModalConfirmacao 
-                                            message="Tem certeza que deseja excluir?" 
-                                            onConfirm={() => handleExcluirCliente(pessoa.id)} 
-                                            onCancel={() => setShowModal(false)}
-                                        />
+                                    {showModal === pessoa.id && (
+                                        <div style={{ position: "relative", top: 0, left: 0 }}>
+                                            <ModalConfirmacao 
+                                                message="Tem certeza que deseja excluir?" 
+                                                onConfirm={() => handleExcluirCliente(pessoa.id)} 
+                                                onCancel={() => setShowModal(null)}
+                                            />
+                                        </div>
                                     )}
                                 </td>
                             </tr>
