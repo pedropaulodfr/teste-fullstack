@@ -1,8 +1,8 @@
-import React from "react";
-import { useState } from 'react';
+import React, { useState } from "react";
 import './CadastroCliente.css';
 import { Link } from 'react-router-dom'
 import '../ListaClientes/ListaClientes'
+import api from "../../api";
 
 function CadastroCliente() {
 
@@ -30,16 +30,16 @@ function CadastroCliente() {
         inputCelular.addEventListener("keypress", () => {
             let inputLength = inputCelular.value.length
     
-            if (inputLength === 0) {
+            if (inputLength == 0) {
                 inputCelular.value += '('
             }
-            if (inputLength === 3) {
+            if (inputLength == 3) {
                 inputCelular.value += ') '
             }
-            if (inputLength === 6) {
+            if (inputLength == 6) {
                 inputCelular.value += ' '
             }
-            if (inputLength === 11) {
+            if (inputLength == 11) {
                 inputCelular.value += '-'
             }
         })
@@ -58,14 +58,14 @@ function CadastroCliente() {
     const handleSalvarCliente = () => {
         console.log({nome, celular, status, dataNascimento, CEP, endereco, numero, complemento, bairro, cidade, uf});
         
-        if (celular == "") {
+        if (celular === "") {
             celular = "Não Informado"
         } 
 
-        if (status == "ativo") {
-            var statusBoolean = 1
+        if (status === "ativo") {
+            var statusBoolean = true
         } else {
-            var statusBoolean = 0
+            var statusBoolean = false
         }
         
         const data = new Date(dataNascimento)
@@ -84,35 +84,25 @@ function CadastroCliente() {
             mes++
         }
 
-        const dataNascimentoFormatada = `${dia}/${mes}/${data.getFullYear()}`
+        const dataNascimentoFormatada = `${data.getFullYear()}-${mes}-${dia}`
 
-        const listaPessoasString = localStorage.getItem("listaPessoas")
-        const listaPessoas = JSON.parse(listaPessoasString)
-
-        const novoCliente = {
-            id: listaPessoas.length + 1,
+        api
+        .post("/Clientes", {
             nome: nome,
-            celular: celular,
+            telefone: celular,
             status: statusBoolean,
             dataNascimento: dataNascimentoFormatada,
             CEP: CEP,
             endereco: endereco,
-            numero: numero,
+            numeroResidencia: numero,
             complemento: complemento,
             bairro: bairro,
             cidade: cidade,
             uf: uf
-        }
-        
-        listaPessoas.push(novoCliente)
+        })
+        .then((response) => {alert("Usuário Criado")})
+        .catch((err) => {console.error(err)})
 
-        const listaPessoasAtualizada = JSON.stringify(listaPessoas)
-        localStorage.setItem("listaPessoas", listaPessoasAtualizada)
-
-        console.log(listaPessoas);
-
-        alert("Dados salvos!")
-        
     }
 
 

@@ -1,28 +1,32 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import ModalConfirmacao from '../ModalConfirmacao/ModalConfirmacao';
 import './TabelaClientes.css';
+import api from '../../api';
 
-function TabelaClientes( {listaPessoas} ) {
+
+function TabelaClientes() {
 
     const [showModal, setShowModal] = useState(false);
 
-    const handleExcluirCliente = (clienteId) => {
 
-        for (let i = 0; i < listaPessoas.length; i++) {
-            const pessoa = listaPessoas[i];
-          
-            if (pessoa.id === clienteId) {
-                listaPessoas.splice(i, 1)
-              break; 
-            }
-          }
-        
-        const listaPessoasAtualizada = JSON.stringify(listaPessoas)
-        localStorage.setItem("listaPessoas", listaPessoasAtualizada)
-        
-        alert("Cliente removido!")
+    const handleExcluirCliente = (clienteId) => {
+        api
+        .delete(`/Clientes/${clienteId}`)
+        .then(response => {alert("Cliente Removido")})
+        .catch(error => {console.log(error)})
     }
+
+
+    const [clientes, setClientes] = useState([]);
+    useEffect(() => {
+        api
+        .get("/Clientes")
+        .then((response) => setClientes(response.data))
+        .catch((err) => {
+            console.error("ops! ocorreu um erro" + err);
+        });
+    }, []);
+
 
     return(
         <>
@@ -37,16 +41,16 @@ function TabelaClientes( {listaPessoas} ) {
                         </tr>
                     </thead>
                     <tbody>
-                        {listaPessoas.map(pessoa => (
+                        {clientes.map(pessoa => (
                             <tr key={pessoa.id}>
                                 <td>{pessoa.nome}</td>
-                                <td>{pessoa.celular}</td>
+                                <td>{pessoa.telefone}</td>
                                 <td>{pessoa.dataNascimento}</td>
                                 <td>
                                     <h2 className={
-                                        pessoa.status == 1 ? "statusAtivo" : "statusInativo"
+                                        pessoa.status === true ? "statusAtivo" : "statusInativo"
                                     }>{
-                                        pessoa.status == 1 ? "Ativo" : "Inativo"
+                                        pessoa.status === true ? "Ativo" : "Inativo"
                                     }
                                     </h2>
                                 </td>
