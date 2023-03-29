@@ -5,19 +5,9 @@ import api from '../../api';
 
 
 function TabelaClientes() {
-
     const [showModal, setShowModal] = useState(false);
-
-
-    const handleExcluirCliente = (clienteId) => {
-        api
-        .delete(`/Clientes/${clienteId}`)
-        .then(response => {alert("Cliente Removido")})
-        .catch(error => {console.log(error)})
-    }
-
-
     const [clientes, setClientes] = useState([]);
+    
     useEffect(() => {
         api
         .get("/Clientes")
@@ -27,6 +17,15 @@ function TabelaClientes() {
         });
     }, []);
 
+    const handleExcluirCliente = (clienteId) => {
+        api
+        .delete(`/Clientes/${clienteId}`)
+        .then(() => {
+            setClientes(clientes.filter((cliente) => cliente.id !== clienteId));
+            alert("Cliente removido com sucesso!")
+        })
+        .catch(error => {console.log(error)})
+    }
 
     return(
         <>
