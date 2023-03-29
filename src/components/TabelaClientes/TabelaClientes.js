@@ -7,6 +7,8 @@ import api from '../../api';
 function TabelaClientes() {
     const [showModal, setShowModal] = useState(false);
     const [clientes, setClientes] = useState([]);
+    const [clienteSelecionadoId, setClienteSelecionadoId] = useState(null);
+
     
     useEffect(() => {
         api
@@ -44,7 +46,7 @@ function TabelaClientes() {
                             <tr key={pessoa.id}>
                                 <td>{pessoa.nome}</td>
                                 <td>{pessoa.telefone}</td>
-                                <td>{pessoa.dataNascimento}</td>
+                                <td>{new Date(pessoa.dataNascimento).toLocaleDateString('pt-BR')}</td>
                                 <td>
                                     <h2 className={
                                         pessoa.status === true ? "statusAtivo" : "statusInativo"
@@ -60,14 +62,25 @@ function TabelaClientes() {
                                     </button>
                                     <button 
                                         className="excluir-btn" 
-                                        onClick={() => setShowModal(true)}>
+                                        onClick={() => {
+                                            setClienteSelecionadoId(pessoa.id);
+                                            setShowModal(true)
+                                        }}
+                                    >
                                         Excluir
                                     </button>
-                                    {showModal && (
+                                    {showModal && clienteSelecionadoId === pessoa.id && (
                                         <ModalConfirmacao 
                                             message="Tem certeza que deseja excluir?" 
-                                            onConfirm={() => handleExcluirCliente(pessoa.id)} 
-                                            onCancel={() => setShowModal(false)}
+                                            onConfirm={() => {
+                                                handleExcluirCliente(clienteSelecionadoId);
+                                                setClienteSelecionadoId(null);
+                                                setShowModal(false);
+                                            }} 
+                                            onCancel={() => {
+                                                setClienteSelecionadoId(null);
+                                                setShowModal(false)
+                                            }}
                                         />
                                     )}
                                 </td>
@@ -80,4 +93,4 @@ function TabelaClientes() {
     )
 }
 
-export default TabelaClientes
+export default TabelaClientes;
