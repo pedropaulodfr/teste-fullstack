@@ -21,10 +21,6 @@ function TabelaClientes() {
         });
     }, []);
 
-    const handleEditarCliente = (clienteId) => {
-        alert("Editar cliente")
-    }
-
     const handleExcluirCliente = (clienteId) => {
         api
         .delete(`/Clientes/${clienteId}`)
@@ -38,7 +34,7 @@ function TabelaClientes() {
     return(
         <>
             {showModalEdicao && (
-                <ModalEdicao statusModal={setShowModalEdicao} />
+                <ModalEdicao statusModal={setShowModalEdicao} clienteId={clienteSelecionadoId} />
             )}
             <div className="tabela-clientes">
                 <table>
@@ -68,6 +64,7 @@ function TabelaClientes() {
                                     <button 
                                         className="editar-btn"
                                         onClick={() => {
+                                            setClienteSelecionadoId(pessoa.id);
                                             setShowModalEdicao(true)
                                         }}
                                     >

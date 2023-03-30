@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './ModalEdicao.css'
+import api from "../../api";
 import { CgClose } from "react-icons/cg";
+import moment from 'moment';
+
 
 
 function ModalEdicao(props) {
+    const [cliente, setCliente] = useState([])
     const [nome, setNome] = useState("")
     let [celular, setCelular] = useState("")
     const [status, setStatus] = useState("")
@@ -15,6 +19,13 @@ function ModalEdicao(props) {
     const [bairro, setBairro] = useState("")
     const [cidade, setCidade] = useState("")
     const [uf, setUf] = useState("")
+
+    useEffect(() => {
+        api
+    .get(`Clientes/${props.clienteId}`)
+    .then((response) => {setCliente(response.data)})
+    .catch((err) => {console.error(err)})
+    }, []);
 
     const handleMascaras = () => {
         const inputCelular = document.querySelector("input.input-celular")
@@ -47,6 +58,56 @@ function ModalEdicao(props) {
         })
     }
 
+    const handleAtualizarCliente = (id, statusModal) => {
+        if (celular === "") {
+            celular = "Não Informado"
+        } 
+
+        if (status === "ativo") {
+            var statusBoolean = true
+        } else {
+            var statusBoolean = false
+        }
+        
+        const data = new Date(dataNascimento)
+        let dia = data.getDate()
+        let mes = data.getMonth()
+
+        if ((dia + 1) < 10) {
+            dia = "0" + (dia + 1)
+        } else {
+            dia++
+        }
+
+        if ((mes + 1) < 10) {
+            mes = "0" + (mes + 1)
+        } else {
+            mes++
+        }
+
+        const dataNascimentoFormatada = `${data.getFullYear()}-${mes}-${dia}`
+
+        api
+        .put(`/Clientes/${id}`, {
+            nome: nome,
+            telefone: celular,
+            status: statusBoolean,
+            dataNascimento: dataNascimentoFormatada,
+            CEP: CEP,
+            endereco: endereco,
+            numeroResidencia: numero,
+            complemento: complemento,
+            bairro: bairro,
+            cidade: cidade,
+            uf: uf
+        })
+        .then((response) => {
+            alert("Usuário Atualizado");
+            statusModal(false);
+        })
+        .catch((err) => {console.error(err)})
+    }
+
     return (
         <div className='modal-edicao'>
             <div className='button-close-modal'>
@@ -60,14 +121,15 @@ function ModalEdicao(props) {
                     
                     <div className="inputs-edicao">
                         <input 
+                            id="input-nome"
                             type="text" 
-                            placeholder="Nome" 
+                            placeholder={cliente.nome} 
                             value={nome} 
                             onChange={e => setNome(e.target.value)}
-                        />
+                            />
                         <input 
                             type="text" 
-                            placeholder="Celular"
+                            placeholder={cliente.telefone} 
                             className="input-celular"
                             maxLength="16"
                             value={celular} 
@@ -75,7 +137,7 @@ function ModalEdicao(props) {
                             onClick={handleMascaras}
                         />
                         <select 
-                            name="Status"
+                            name={cliente.status}
                             value={status}
                             onChange={e => setStatus(e.target.value)}
                         >
@@ -85,7 +147,7 @@ function ModalEdicao(props) {
                         </select>
                         <input 
                             type="date" 
-                            placeholder="Data Nascimento" 
+                            placeholder={moment(cliente.dataNascimento).format('YYYY-MM-DD')}
                             value={dataNascimento} 
                             onChange={e => setDataNascimento(e.target.value)}
                         />
@@ -99,46 +161,46 @@ function ModalEdicao(props) {
                     <div className="inputs-edicao">
                         <input 
                             type="text" 
-                            placeholder="CEP" 
+                            placeholder={cliente.cep} 
                             className="input-CEP"
                             maxLength="9"
                             value={CEP} 
                             onChange={e => setCEP(e.target.value)}
                             onClick={handleMascaras}
-                        />
+                            />
                         <input 
                             type="text" 
-                            placeholder="Endereço" 
+                            placeholder={cliente.endereco}  
                             value={endereco} 
                             onChange={e => setEndereco(e.target.value)}
                         />
                         <input 
                             type="text" 
-                            placeholder="Nº" 
+                            placeholder={cliente.numeroResidencia}  
                             value={numero} 
                             onChange={e => setNumero(e.target.value)}
                         />
                         <input 
                             type="text" 
-                            placeholder="Complemento" 
+                            placeholder={cliente.complemento} 
                             value={complemento} 
                             onChange={e => setComplemento(e.target.value)}
                         />
                         <input 
                             type="text" 
-                            placeholder="Bairro" 
+                            placeholder={cliente.bairro} 
                             value={bairro} 
                             onChange={e => setBairro(e.target.value)}
                         />
                         <input 
                             type="text"
-                             placeholder="Cidade"
+                             placeholder={cliente.cidade} 
                             value={cidade} 
                             onChange={e => setCidade(e.target.value)}
                         />
                         <input 
                             type="text" 
-                            placeholder="UF"
+                            placeholder={cliente.uf} 
                             maxLength="2"
                             value={uf} 
                             onChange={e => setUf(e.target.value)}
@@ -146,7 +208,7 @@ function ModalEdicao(props) {
                     </div>
                 </div>
                 <div className="button-salvar-edicao">
-                    <button className="salvar-btn" onClick={""}>Salvar Dados</button>
+                    <button className="salvar-btn" onClick={() => {handleAtualizarCliente(props.clienteId, props.statusModal)}}>Atualizar Dados</button>
                 </div>
             </div>
         </div>

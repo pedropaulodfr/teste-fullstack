@@ -55,9 +55,7 @@ function CadastroCliente() {
         })
     }
 
-    const handleSalvarCliente = () => {
-        console.log({nome, celular, status, dataNascimento, CEP, endereco, numero, complemento, bairro, cidade, uf});
-        
+    const handleSalvarCliente = () => {      
         if (celular === "") {
             celular = "Não Informado"
         } 
