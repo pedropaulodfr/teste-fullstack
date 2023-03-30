@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ModalConfirmacao from '../ModalConfirmacao/ModalConfirmacao';
+import ModalEdicao from "../ModalEdicao/ModalEdicao";
 import './TabelaClientes.css';
 import api from '../../api';
 
 
 function TabelaClientes() {
     const [showModal, setShowModal] = useState(false);
+    const [showModalEdicao, setShowModalEdicao] = useState(false);
     const [clientes, setClientes] = useState([]);
     const [clienteSelecionadoId, setClienteSelecionadoId] = useState(null);
 
@@ -19,6 +21,10 @@ function TabelaClientes() {
         });
     }, []);
 
+    const handleEditarCliente = (clienteId) => {
+        alert("Editar cliente")
+    }
+
     const handleExcluirCliente = (clienteId) => {
         api
         .delete(`/Clientes/${clienteId}`)
@@ -31,6 +37,9 @@ function TabelaClientes() {
 
     return(
         <>
+            {showModalEdicao && (
+                <ModalEdicao statusModal={setShowModalEdicao} />
+            )}
             <div className="tabela-clientes">
                 <table>
                     <thead>
@@ -57,7 +66,11 @@ function TabelaClientes() {
                                 </td>
                                 <td>
                                     <button 
-                                        className="editar-btn">
+                                        className="editar-btn"
+                                        onClick={() => {
+                                            setShowModalEdicao(true)
+                                        }}
+                                    >
                                         Editar
                                     </button>
                                     <button 

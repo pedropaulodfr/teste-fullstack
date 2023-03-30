@@ -1,0 +1,60 @@
+.modal-edicao{
+    position: fixed;
+    top: 20%;
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 55%;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.08);
+}
+
+.button-close-modal {
+    display: flex;
+    justify-content: flex-end;
+    color: red;
+    font-size: 1.8em;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.dados-pessoais-edicao-title, .dados-endereco-edicao-title{
+    display: flex;
+    width: 80vw;
+    color: #4B9738;
+    margin-left: 30px;
+    margin-top: 20px;
+    font-size: .7em;
+}
+
+.inputs-edicao input[type="text"], input[type="date"] {
+    margin-left: 30px;
+    margin-right: 30px;
+    outline: none;
+    border: solid 1px #777777;
+    width: 250px;
+    height: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    
+}
+
+.inputs-edicao select {
+    margin-left: 30px;
+    margin-right: 30px;
+    border: solid 1px #777777;
+    width: 250px;
+    height: 43px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.button-salvar-edicao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+}
