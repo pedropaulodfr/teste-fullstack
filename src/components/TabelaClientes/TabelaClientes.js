@@ -9,12 +9,13 @@ function TabelaClientes(props) {
     const [showModal, setShowModal] = useState(false);
     const [showModalEdicao, setShowModalEdicao] = useState(false);
     const [clientes, setClientes] = useState([]);
+    const [clientesPesquisa, setClientesPesquisa] = useState([])
     const [clienteSelecionadoId, setClienteSelecionadoId] = useState(null);
 
     useEffect(() => {
         api
         .get("/Clientes")
-        .then((response) => setClientes(response.data))
+        .then((response) => {setClientes(response.data); setClientesPesquisa(response.data)})
         .catch((err) => {
             console.error("ops! ocorreu um erro" + err);
         });
@@ -26,6 +27,10 @@ function TabelaClientes(props) {
         const handlePesquisaCliente = () => {
             let resultadoPesquisa = clientes.filter(cliente => cliente.nome.toLowerCase().startsWith(props.pesquisa.toLowerCase()));
             setClientes(resultadoPesquisa)
+
+            if (props.pesquisa == "") {
+                setClientes(clientesPesquisa)
+            }
         }
     
         if (props.statusPesquisa) {
