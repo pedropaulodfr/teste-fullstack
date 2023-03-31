@@ -1,0 +1,55 @@
+
+@keyframes progresso {
+    0%{
+        width: 1%;
+    }
+    100% {
+        width: 100%; 
+    }
+}
+
+
+.alerta-container {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.08);
+    width: 300px;
+    height: 90px;
+    border-radius: 12px;
+}
+
+.button-close-alerta {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    color: #ffffff;
+}
+
+.cgClose {
+    margin-top: 8px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.mensagem-alerta-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.tempo {
+    display: flex;
+    width: 100%;
+    height: 7px;
+    border-radius: 12px;
+}
+
+.tempo div {
+    animation: progresso 5s linear;
+    margin-left: 8px;
+    margin-right: 10px;
+}

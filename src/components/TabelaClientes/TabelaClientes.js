@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ModalConfirmacao from '../ModalConfirmacao/ModalConfirmacao';
 import ModalEdicao from "../ModalEdicao/ModalEdicao";
+import Alertas from "../Alertas/Alertas";
 import './TabelaClientes.css';
 import api from '../../api';
 
@@ -9,8 +10,9 @@ function TabelaClientes(props) {
     const [showModal, setShowModal] = useState(false);
     const [showModalEdicao, setShowModalEdicao] = useState(false);
     const [clientes, setClientes] = useState([]);
-    const [clientesPesquisa, setClientesPesquisa] = useState([])
+    const [clientesPesquisa, setClientesPesquisa] = useState([]);
     const [clienteSelecionadoId, setClienteSelecionadoId] = useState(null);
+    const [exclusaoSucesso, setExclusaoSucesso] = useState(false);
 
     useEffect(() => {
         api
@@ -19,9 +21,8 @@ function TabelaClientes(props) {
         .catch((err) => {
             console.error("ops! ocorreu um erro" + err);
         });
-
-
     }, []);
+
 
     useEffect(() => {
         const handlePesquisaCliente = () => {
@@ -38,20 +39,35 @@ function TabelaClientes(props) {
         }
     }, [props.pesquisa])
 
+    useEffect(() => {
+        if (exclusaoSucesso) {
+          const timer = setTimeout(() => {
+            setExclusaoSucesso(false);
+          }, 5000);
+    
+          return () => clearTimeout(timer);
+        }
+      }, [exclusaoSucesso]);
+
+
     const handleExcluirCliente = (clienteId) => {
         api
         .delete(`/Clientes/${clienteId}`)
         .then(() => {
             setClientes(clientes.filter((cliente) => cliente.id !== clienteId));
-            alert("Cliente removido com sucesso!")
+            //alert("Cliente removido com sucesso!")
         })
         .catch(error => {console.log(error)})
+        
     }
 
     return(
         <>
             {showModalEdicao && (
                 <ModalEdicao statusModal={setShowModalEdicao} clienteId={clienteSelecionadoId} listaClientes={setClientes}/>
+            )}
+            {exclusaoSucesso && (
+                <Alertas mensagem="Cliente removido com sucesso!" corMensagem="#ffffff" corFundo="#219653" corBarraProgresso="white" statusExclusao={setExclusaoSucesso}/>
             )}
             <div className="tabela-clientes">
                 <table>
@@ -103,6 +119,7 @@ function TabelaClientes(props) {
                                                 handleExcluirCliente(clienteSelecionadoId);
                                                 setClienteSelecionadoId(null);
                                                 setShowModal(false);
+                                                setExclusaoSucesso(true);
                                             }} 
                                             onCancel={() => {
                                                 setClienteSelecionadoId(null);
