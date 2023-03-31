@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './CadastroCliente.css';
 import { Link } from 'react-router-dom'
 import '../ListaClientes/ListaClientes'
 import api from "../../api";
+import Alertas from "../Alertas/Alertas";
 
 function CadastroCliente() {
-
     const currentDate = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formatter = new Intl.DateTimeFormat('pt-BR', options);
@@ -22,6 +22,19 @@ function CadastroCliente() {
     const [bairro, setBairro] = useState("")
     const [cidade, setCidade] = useState("")
     const [uf, setUf] = useState("")
+    const [cadastroSucesso, setCadastroSucesso] = useState(false)
+    const [cadastroErro, setCadastroErro] = useState(false)
+
+    useEffect(() => {
+        if (cadastroSucesso || cadastroErro) {
+          const timer = setTimeout(() => {
+            setCadastroSucesso(false);
+            setCadastroErro(false);
+          }, 5000);
+    
+          return () => clearTimeout(timer);
+        }
+    }, [cadastroSucesso, cadastroErro]);
    
     const handleMascaras = () => {
         const inputCelular = document.querySelector("input.input-celular")  
@@ -89,14 +102,36 @@ function CadastroCliente() {
             cidade: cidade,
             uf: uf
         })
-        .then((response) => {alert("Usuário Criado!")})
-        .catch((err) => {console.error(err)})
+        .then((response) => {
+            setCadastroSucesso(true)
+        })
+        .catch((err) => {
+            console.error(err)
+            console.error(err.response.data.errors)
+            setCadastroErro(true)
+        })
 
     }
 
 
     return (
         <>
+            {cadastroSucesso && (
+                <Alertas 
+                    mensagem="Cliente cadastrado com sucesso!" 
+                    corMensagem="#ffffff" corFundo="#219653" 
+                    corBarraProgresso="white" 
+                    setStatus={setCadastroSucesso}
+                />
+            )}
+            {cadastroErro && (
+                <Alertas 
+                    mensagem="Erro ao realizar cadastro!" 
+                    corMensagem="#ffffff" corFundo="#B41616" 
+                    corBarraProgresso="white" 
+                    setStatus={setCadastroErro}
+                />
+            )}
             <div className='cadastro-header'>
                 <h2>Cadastro de Cliente</h2>
                 <h2 className="data-atual">{formattedDate}</h2>

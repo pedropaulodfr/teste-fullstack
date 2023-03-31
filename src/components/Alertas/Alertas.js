@@ -8,7 +8,7 @@ function Alertas(props) {
         <div className='alerta-container' style={{backgroundColor:`${props.corFundo}`}}>
             <div className='button-close-alerta'>
                 <CgClose className='cgClose' onClick={() => {
-                    props.statusExclusao(false)
+                    props.setStatus(false)
                 }} />
             </div>
             <div className='mensagem-alerta-content'>

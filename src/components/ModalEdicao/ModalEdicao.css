@@ -7,8 +7,6 @@
     height: 55%;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 0, 0, 0.08);
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .button-close-modal {
@@ -18,6 +16,11 @@
     font-size: 1.8em;
     cursor: pointer;
     margin: 10px;
+}
+
+.modal-edicao-content {
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .dados-pessoais-edicao-title, .dados-endereco-edicao-title{

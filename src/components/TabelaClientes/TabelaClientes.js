@@ -13,6 +13,8 @@ function TabelaClientes(props) {
     const [clientesPesquisa, setClientesPesquisa] = useState([]);
     const [clienteSelecionadoId, setClienteSelecionadoId] = useState(null);
     const [exclusaoSucesso, setExclusaoSucesso] = useState(false);
+    const [edicaoSucesso, setEdicaoSucesso] = useState(false)
+
 
     useEffect(() => {
         api
@@ -40,14 +42,15 @@ function TabelaClientes(props) {
     }, [props.pesquisa])
 
     useEffect(() => {
-        if (exclusaoSucesso) {
+        if (exclusaoSucesso || edicaoSucesso) {
           const timer = setTimeout(() => {
             setExclusaoSucesso(false);
+            setEdicaoSucesso(false);
           }, 5000);
     
           return () => clearTimeout(timer);
         }
-      }, [exclusaoSucesso]);
+      }, [exclusaoSucesso, edicaoSucesso]);
 
 
     const handleExcluirCliente = (clienteId) => {
@@ -55,7 +58,6 @@ function TabelaClientes(props) {
         .delete(`/Clientes/${clienteId}`)
         .then(() => {
             setClientes(clientes.filter((cliente) => cliente.id !== clienteId));
-            //alert("Cliente removido com sucesso!")
         })
         .catch(error => {console.log(error)})
         
@@ -64,10 +66,28 @@ function TabelaClientes(props) {
     return(
         <>
             {showModalEdicao && (
-                <ModalEdicao statusModal={setShowModalEdicao} clienteId={clienteSelecionadoId} listaClientes={setClientes}/>
+                <ModalEdicao 
+                    statusModal={setShowModalEdicao} 
+                    clienteId={clienteSelecionadoId} 
+                    listaClientes={setClientes}
+                    setStatus={setEdicaoSucesso}
+                />
             )}
             {exclusaoSucesso && (
-                <Alertas mensagem="Cliente removido com sucesso!" corMensagem="#ffffff" corFundo="#219653" corBarraProgresso="white" statusExclusao={setExclusaoSucesso}/>
+                <Alertas 
+                    mensagem="Cliente removido com sucesso!" 
+                    corMensagem="#ffffff" corFundo="#219653" 
+                    corBarraProgresso="white" 
+                    setStatus={setExclusaoSucesso}
+                />
+            )}
+            {edicaoSucesso && (
+                <Alertas 
+                    mensagem="Cliente atualizado com sucesso!" 
+                    corMensagem="#ffffff" corFundo="#219653" 
+                    corBarraProgresso="white" 
+                    setStatus={setEdicaoSucesso}
+                />
             )}
             <div className="tabela-clientes">
                 <table>

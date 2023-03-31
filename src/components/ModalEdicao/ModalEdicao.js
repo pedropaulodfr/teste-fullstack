@@ -3,6 +3,7 @@ import './ModalEdicao.css'
 import api from "../../api";
 import { CgClose } from "react-icons/cg";
 import moment from 'moment';
+import Alertas from "../Alertas/Alertas";
 
 
 function ModalEdicao(props) {
@@ -18,6 +19,7 @@ function ModalEdicao(props) {
     const [bairro, setBairro] = useState("")
     const [cidade, setCidade] = useState("")
     const [uf, setUf] = useState("")
+    const [edicaoErro, setEdicaoErro] = useState(false)
 
     useEffect(() => {
         api
@@ -25,6 +27,16 @@ function ModalEdicao(props) {
     .then((response) => {setCliente(response.data)})
     .catch((err) => {console.error(err)})
     }, []);
+
+    useEffect(() => {
+        if (edicaoErro) {
+          const timer = setTimeout(() => {
+            setEdicaoErro(false);
+          }, 5000);
+    
+          return () => clearTimeout(timer);
+        }
+      }, [edicaoErro]);
 
     const handleMascaras = () => {
         const inputCelular = document.querySelector("input.input-celular")
@@ -101,15 +113,27 @@ function ModalEdicao(props) {
             uf: uf
         })
         .then((response) => {
-            alert("Usuário Atualizado");
+            props.setStatus(true)
             statusModal(false);
             handleVisualizarListaClientesAtualizada();
         })
-        .catch((err) => {console.error(err)})
+        .catch((err) => {
+            console.error(err)
+            setEdicaoErro(true)
+        })
     }
 
     return (
         <div className='modal-edicao'>
+            {edicaoErro && (
+                <Alertas 
+                    mensagem="Erro ao atualizar cliente!" 
+                    corMensagem="#ffffff" 
+                    corFundo="#B41616" 
+                    corBarraProgresso="white" 
+                    setStatus={setEdicaoErro}
+                />
+            )}
             <div className='button-close-modal'>
                 <CgClose onClick={() => {props.statusModal(false)}} />
             </div>
