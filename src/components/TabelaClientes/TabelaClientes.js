@@ -34,7 +34,7 @@ function TabelaClientes() {
     return(
         <>
             {showModalEdicao && (
-                <ModalEdicao statusModal={setShowModalEdicao} clienteId={clienteSelecionadoId} />
+                <ModalEdicao statusModal={setShowModalEdicao} clienteId={clienteSelecionadoId} listaClientes={setClientes}/>
             )}
             <div className="tabela-clientes">
                 <table>

@@ -1,16 +1,9 @@
 import React from 'react';
 import './Navbar.css';
 import { Link } from 'react-router-dom'
-
 import logoBrancaCSJ from '../../assets/logo-csjgroup-branco.png'
-
 import { FaPowerOff } from "react-icons/fa";
 
-const username = {
-    id: 1,
-    name: "Pedro Paulo Dantas Franco Rocha",
-    cpf: "70200443445"
-}
 
 function Navbar() {
     return (
@@ -22,7 +15,7 @@ function Navbar() {
 
             <div className='username-logout'>
                 <div className='nome-usuario-content'>
-                    <h2 className='nome-usuario'>{username.name}</h2>
+                    <h2 className='nome-usuario'>{localStorage.getItem("usuarioLogado")}</h2>
                 </div>
 
                 <div className='logout-content'>

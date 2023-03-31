@@ -1,27 +1,29 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom'
 import { useNavigate  } from 'react-router-dom';
 import logoCSJ from '../assets/logo.png'
 import './Login.css'
+import api from '../api'
 
 function Login () {
   const navigate = useNavigate();
-
+  
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
-
+  const [clientes, setClientes] = useState([])
   const [showErrorMessage, setShowErrorMessage] = useState(false)
+  
+  api
+  .get(`/Usuarios`)
+  .then((response) => {setClientes(response.data)})
+  .catch((error) => {console.error(error)})
 
-  console.log({email, password});
-
+  
   const handleLogin = () => {
-    const listaUsuariosString = localStorage.getItem("listaUsuarios")
-    const listaUsuarios = JSON.parse(listaUsuariosString)
-    for (let i = 0; i < listaUsuarios.length; i++) {
+    for (let i = 0; i < clientes.length; i++) {
       
-      if (listaUsuarios[i].email === email && listaUsuarios[i].senha === password) {
+      if (clientes[i].email === email && clientes[i].senha === password) {
+        localStorage.setItem("usuarioLogado", clientes[i].nome)
         navigate('/home')
       } else {
         setShowErrorMessage(true)

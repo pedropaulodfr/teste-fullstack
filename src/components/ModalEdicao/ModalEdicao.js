@@ -5,12 +5,11 @@ import { CgClose } from "react-icons/cg";
 import moment from 'moment';
 
 
-
 function ModalEdicao(props) {
     const [cliente, setCliente] = useState([])
     const [nome, setNome] = useState("")
-    let [celular, setCelular] = useState("")
-    const [status, setStatus] = useState("")
+    const [celular, setCelular] = useState("")
+    const [status, setStatus] = useState()
     const [dataNascimento, setDataNascimento] = useState("")
     const [CEP, setCEP] = useState("")
     const [endereco, setEndereco] = useState("")
@@ -44,8 +43,8 @@ function ModalEdicao(props) {
             }
             if (inputLength == 11) {
                 inputCelular.value += '-'
-        }
-    })
+            }
+        })
 
 
         const inputCEP = document.querySelector("input.input-CEP")
@@ -58,17 +57,14 @@ function ModalEdicao(props) {
         })
     }
 
-    const handleAtualizarCliente = (id, statusModal) => {
-        if (celular === "") {
-            celular = "Não Informado"
-        } 
+    const handleVisualizarListaClientesAtualizada = () => {
+        api
+        .get(`/Clientes`)
+        .then((response) => {props.listaClientes(response.data)})
+        .catch((error) => {console.error(error)})
+    }
 
-        if (status === "ativo") {
-            var statusBoolean = true
-        } else {
-            var statusBoolean = false
-        }
-        
+    const handleAtualizarCliente = (id, statusModal) => {
         const data = new Date(dataNascimento)
         let dia = data.getDate()
         let mes = data.getMonth()
@@ -87,11 +83,14 @@ function ModalEdicao(props) {
 
         const dataNascimentoFormatada = `${data.getFullYear()}-${mes}-${dia}`
 
+        let booleanStatus = status === "true" ? true : false;
+        let validacaoCelular = celular === "" ? "Não Informado": celular;
+
         api
         .put(`/Clientes/${id}`, {
             nome: nome,
-            telefone: celular,
-            status: statusBoolean,
+            telefone: validacaoCelular,
+            status: booleanStatus,
             dataNascimento: dataNascimentoFormatada,
             CEP: CEP,
             endereco: endereco,
@@ -104,6 +103,7 @@ function ModalEdicao(props) {
         .then((response) => {
             alert("Usuário Atualizado");
             statusModal(false);
+            handleVisualizarListaClientesAtualizada();
         })
         .catch((err) => {console.error(err)})
     }
@@ -139,10 +139,11 @@ function ModalEdicao(props) {
                         <select 
                             name={cliente.status}
                             value={status}
+                            defaultValue=""
                             onChange={e => setStatus(e.target.value)}
                         >
-                            <option value="" disabled selected>Status</option>
-                            <option value="ativo" selected>Ativo</option>
+                            <option value="" disabled >Status</option>
+                            <option value="ativo" >Ativo</option>
                             <option value="inativo">Inativo</option>
                         </select>
                         <input 

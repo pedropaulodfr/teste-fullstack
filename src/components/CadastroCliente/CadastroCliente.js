@@ -12,8 +12,8 @@ function CadastroCliente() {
     const formattedDate = formatter.format(currentDate);
 
     const [nome, setNome] = useState("")
-    let [celular, setCelular] = useState("")
-    const [status, setStatus] = useState("")
+    const [celular, setCelular] = useState("")
+    const [status, setStatus] = useState()
     const [dataNascimento, setDataNascimento] = useState("")
     const [CEP, setCEP] = useState("")
     const [endereco, setEndereco] = useState("")
@@ -22,11 +22,9 @@ function CadastroCliente() {
     const [bairro, setBairro] = useState("")
     const [cidade, setCidade] = useState("")
     const [uf, setUf] = useState("")
-
    
     const handleMascaras = () => {
-        const inputCelular = document.querySelector("input.input-celular")
-        
+        const inputCelular = document.querySelector("input.input-celular")  
         inputCelular.addEventListener("keypress", () => {
             let inputLength = inputCelular.value.length
     
@@ -44,7 +42,6 @@ function CadastroCliente() {
             }
         })
 
-
         const inputCEP = document.querySelector("input.input-CEP")
         inputCEP.addEventListener("keypress", () => {
             let inputLength = inputCEP.value.length
@@ -55,17 +52,7 @@ function CadastroCliente() {
         })
     }
 
-    const handleSalvarCliente = () => {      
-        if (celular === "") {
-            celular = "Não Informado"
-        } 
-
-        if (status === "ativo") {
-            var statusBoolean = true
-        } else {
-            var statusBoolean = false
-        }
-        
+    const handleSalvarCliente = () => { 
         const data = new Date(dataNascimento)
         let dia = data.getDate()
         let mes = data.getMonth()
@@ -84,21 +71,25 @@ function CadastroCliente() {
 
         const dataNascimentoFormatada = `${data.getFullYear()}-${mes}-${dia}`
 
+        let booleanStatus = status === "true" ? true : false;
+        let validacaoCelular = celular === "" ? "Não Informado": celular;
+        let validacaoComplemento = celular === "" ? "": complemento;
+
         api
         .post("/Clientes", {
             nome: nome,
-            telefone: celular,
-            status: statusBoolean,
+            telefone: validacaoCelular,
+            status: booleanStatus,
             dataNascimento: dataNascimentoFormatada,
             CEP: CEP,
             endereco: endereco,
             numeroResidencia: numero,
-            complemento: complemento,
+            complemento: validacaoComplemento,
             bairro: bairro,
             cidade: cidade,
             uf: uf
         })
-        .then((response) => {alert("Usuário Criado")})
+        .then((response) => {alert("Usuário Criado!")})
         .catch((err) => {console.error(err)})
 
     }
@@ -137,11 +128,12 @@ function CadastroCliente() {
                         <select 
                             name="Status"
                             value={status}
+                            defaultValue=""
                             onChange={e => setStatus(e.target.value)}
                         >
-                            <option value="" disabled selected>Status</option>
-                            <option value="ativo" selected>Ativo</option>
-                            <option value="inativo">Inativo</option>
+                            <option value="" disabled>Status</option>
+                            <option value={true}>Ativo</option>
+                            <option value={false}>Inativo</option>
                         </select>
                         <input 
                             type="date" 
