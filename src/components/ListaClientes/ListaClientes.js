@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import TabelaClientes from "../TabelaClientes/TabelaClientes";
 import './ListaClientes.css';
 import { Link } from 'react-router-dom'
 
-const listaPessoasString = localStorage.getItem("listaPessoas")
-const listaPessoas = JSON.parse(listaPessoasString)
 
 function ListaClientes() {
+
+    const [pesquisa, setPesquisa] = useState("")
+    const [statusPesquisa, setStatusPesquisa] = useState()
 
     return (
         <>
@@ -22,11 +23,15 @@ function ListaClientes() {
                 <div className='lista-body'>
                     <div className='lista-top'>
                         <h2 className="clientes-title">Clientes</h2>
-                        <input type="text" placeholder="Pesquisar"/>
+                        <input 
+                            type="text" 
+                            placeholder="Pesquisar"
+                            onChange={(e) => {setPesquisa(e.target.value); setStatusPesquisa(true)}}
+                        />
                     </div>
                 </div>
 
-                <TabelaClientes listaPessoas={listaPessoas} />
+                <TabelaClientes pesquisa={pesquisa} statusPesquisa={statusPesquisa}/>
                 
             </div>
         </>

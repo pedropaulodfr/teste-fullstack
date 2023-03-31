@@ -5,13 +5,12 @@ import './TabelaClientes.css';
 import api from '../../api';
 
 
-function TabelaClientes() {
+function TabelaClientes(props) {
     const [showModal, setShowModal] = useState(false);
     const [showModalEdicao, setShowModalEdicao] = useState(false);
     const [clientes, setClientes] = useState([]);
     const [clienteSelecionadoId, setClienteSelecionadoId] = useState(null);
 
-    
     useEffect(() => {
         api
         .get("/Clientes")
@@ -19,7 +18,20 @@ function TabelaClientes() {
         .catch((err) => {
             console.error("ops! ocorreu um erro" + err);
         });
+
+
     }, []);
+
+    useEffect(() => {
+        const handlePesquisaCliente = () => {
+            let resultadoPesquisa = clientes.filter(cliente => cliente.nome.toLowerCase().startsWith(props.pesquisa.toLowerCase()));
+            setClientes(resultadoPesquisa)
+        }
+    
+        if (props.statusPesquisa) {
+            handlePesquisaCliente();
+        }
+    }, [props.pesquisa])
 
     const handleExcluirCliente = (clienteId) => {
         api
