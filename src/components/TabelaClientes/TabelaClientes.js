@@ -66,7 +66,7 @@ function TabelaClientes(props) {
             {showModalEdicao && (
                 <ModalEdicao statusModal={setShowModalEdicao} clienteId={clienteSelecionadoId} listaClientes={setClientes}/>
             )}
-            {(
+            {exclusaoSucesso && (
                 <Alertas mensagem="Cliente removido com sucesso!" corMensagem="#ffffff" corFundo="#219653" corBarraProgresso="white" statusExclusao={setExclusaoSucesso}/>
             )}
             <div className="tabela-clientes">
