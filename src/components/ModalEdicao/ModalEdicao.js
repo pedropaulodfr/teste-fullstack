@@ -38,6 +38,46 @@ function ModalEdicao(props) {
         }
       }, [edicaoErro]);
 
+    const [novoNome, setNovoNome] = useState(false)
+    const [novoCelular, setNovoCelular] = useState(false)
+    const [novoStatus, setNovoStatus] = useState(false)
+    const [novoDataNascimento, setNovoDataNascimento] = useState(false)
+    const [novoCEP, setNovoCEP] = useState(false)
+    const [novoEndereco, setNovoEndereco] = useState(false)
+    const [novoNumero, setNovoNumero] = useState(false)
+    const [novoComplemento, setNovoComplemento] = useState(false)
+    const [novoBairro, setNovoBairro] = useState(false)
+    const [novoCidade, setNovoCidade] = useState(false)
+    const [novoUf, setNovoUf] = useState(false)
+
+    
+    useEffect(() => {
+        if (!novoNome) {setNome(cliente.nome)}
+        if (!novoCelular) {setCelular(cliente.telefone)}
+        if (!novoStatus) {setStatus(cliente.status)}
+        if (!novoDataNascimento) {setDataNascimento(cliente.dataNascimento)}
+        if (!novoCEP) {setCEP(cliente.cep)}
+        if (!novoEndereco) {setEndereco(cliente.endereco)}
+        if (!novoNumero) {setNumero(cliente.numeroResidencia)}
+        if (!novoComplemento) {setComplemento(cliente.complemento)}
+        if (!novoBairro) {setBairro(cliente.bairro)}
+        if (!novoCidade) {setCidade(cliente.cidade)}
+        if (!novoUf) {setUf(cliente.uf)}
+
+    })
+
+    function handleChangeNome(event) {setNovoNome(true); setNome(event.target.value)}
+    function handleChangeCelular(event) {setNovoCelular(true); setCelular(event.target.value)}
+    function handleChangeStatus(event) {setNovoStatus(true); setStatus(event.target.value)}
+    function handleChangeDataNascimento(event) {setNovoDataNascimento(true); setDataNascimento(event.target.value)}
+    function handleChangeCEP(event) {setNovoCEP(true); setCEP(event.target.value)}
+    function handleChangeEndereco(event) {setNovoEndereco(true); setEndereco(event.target.value)}
+    function handleChangeNumero(event) {setNovoNumero(true); setNumero(event.target.value)}
+    function handleChangeComplemento(event) {setNovoComplemento(true); setComplemento(event.target.value)}
+    function handleChangeBairro(event) {setNovoBairro(true); setBairro(event.target.value)}
+    function handleChangeCidade(event) {setNovoCidade(true); setCidade(event.target.value)}
+    function handleChangeUf(event) {setNovoUf(true); setUf(event.target.value)}
+
     const handleMascaras = () => {
         const inputCelular = document.querySelector("input.input-celular")
         
@@ -81,22 +121,12 @@ function ModalEdicao(props) {
         let dia = data.getDate()
         let mes = data.getMonth()
 
-        if ((dia + 1) < 10) {
-            dia = "0" + (dia + 1)
-        } else {
-            dia++
-        }
+        const dataNascimentoFormatada = `${data.getFullYear()}-${mes < 10 ? "0" + (mes + 1) : mes + 1}-${dia < 10 ? "0" + (dia + 1) : dia+1}`
 
-        if ((mes + 1) < 10) {
-            mes = "0" + (mes + 1)
-        } else {
-            mes++
-        }
-
-        const dataNascimentoFormatada = `${data.getFullYear()}-${mes}-${dia}`
-
-        let booleanStatus = status === "true" ? true : false;
+        let booleanStatus = status === "ativo" || status === true ? true : false;
         let validacaoCelular = celular === "" ? "Não Informado": celular;
+
+        console.log(dataNascimentoFormatada);
 
         api
         .put(`/Clientes/${id}`, {
@@ -145,26 +175,26 @@ function ModalEdicao(props) {
                     
                     <div className="inputs-edicao">
                         <input 
-                            id="input-nome"
                             type="text" 
-                            placeholder={cliente.nome} 
+                            placeholder={"Nome"} 
                             value={nome} 
-                            onChange={e => setNome(e.target.value)}
+                            onChange={handleChangeNome}
                             />
                         <input 
                             type="text" 
-                            placeholder={cliente.telefone} 
+                            placeholder={"Celular"} 
                             className="input-celular"
                             maxLength="16"
                             value={celular} 
-                            onChange={e => setCelular(e.target.value)} 
+                            onChange={handleChangeCelular} 
                             onClick={handleMascaras}
                         />
                         <select 
-                            name={cliente.status}
-                            value={status}
+                            name="Status"
+                            value={status === true || status === "ativo" ? "ativo" : "inativo"}
                             defaultValue=""
-                            onChange={e => setStatus(e.target.value)}
+                            onChange={handleChangeStatus}
+                            onClick={handleChangeStatus}
                         >
                             <option value="" disabled >Status</option>
                             <option value="ativo" >Ativo</option>
@@ -172,9 +202,8 @@ function ModalEdicao(props) {
                         </select>
                         <input 
                             type="date" 
-                            placeholder={moment(cliente.dataNascimento).format('YYYY-MM-DD')}
-                            value={dataNascimento} 
-                            onChange={e => setDataNascimento(e.target.value)}
+                            value={moment(dataNascimento).format('YYYY-MM-DD')} 
+                            onChange={handleChangeDataNascimento}
                         />
                     </div>
                 </div>
@@ -186,49 +215,49 @@ function ModalEdicao(props) {
                     <div className="inputs-edicao">
                         <input 
                             type="text" 
-                            placeholder={cliente.cep} 
+                            placeholder="CEP" 
                             className="input-CEP"
                             maxLength="9"
                             value={CEP} 
-                            onChange={e => setCEP(e.target.value)}
+                            onChange={handleChangeCEP}
                             onClick={handleMascaras}
                             />
                         <input 
                             type="text" 
-                            placeholder={cliente.endereco}  
+                            placeholder="Endereco"
                             value={endereco} 
-                            onChange={e => setEndereco(e.target.value)}
+                            onChange={handleChangeEndereco}
                         />
                         <input 
                             type="text" 
-                            placeholder={cliente.numeroResidencia}  
+                            placeholder="Numero"  
                             value={numero} 
-                            onChange={e => setNumero(e.target.value)}
+                            onChange={handleChangeNumero}
                         />
                         <input 
                             type="text" 
-                            placeholder={cliente.complemento} 
+                            placeholder="Complemento"
                             value={complemento} 
-                            onChange={e => setComplemento(e.target.value)}
+                            onChange={handleChangeComplemento}
                         />
                         <input 
                             type="text" 
-                            placeholder={cliente.bairro} 
+                            placeholder="Bairro"
                             value={bairro} 
-                            onChange={e => setBairro(e.target.value)}
+                            onChange={handleChangeBairro}
                         />
                         <input 
                             type="text"
-                             placeholder={cliente.cidade} 
+                            placeholder="Cidade"
                             value={cidade} 
-                            onChange={e => setCidade(e.target.value)}
+                            onChange={handleChangeCidade}
                         />
                         <input 
                             type="text" 
-                            placeholder={cliente.uf} 
+                            placeholder="UF"
                             maxLength="2"
                             value={uf} 
-                            onChange={e => setUf(e.target.value)}
+                            onChange={handleChangeUf}
                         />
                     </div>
                 </div>
