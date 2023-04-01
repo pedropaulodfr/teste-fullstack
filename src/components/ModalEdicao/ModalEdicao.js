@@ -21,23 +21,6 @@ function ModalEdicao(props) {
     const [uf, setUf] = useState("")
     const [edicaoErro, setEdicaoErro] = useState(false)
 
-    useEffect(() => {
-        api
-    .get(`Clientes/${props.clienteId}`)
-    .then((response) => {setCliente(response.data)})
-    .catch((err) => {console.error(err)})
-    }, []);
-
-    useEffect(() => {
-        if (edicaoErro) {
-          const timer = setTimeout(() => {
-            setEdicaoErro(false);
-          }, 5000);
-    
-          return () => clearTimeout(timer);
-        }
-      }, [edicaoErro]);
-
     const [novoNome, setNovoNome] = useState(false)
     const [novoCelular, setNovoCelular] = useState(false)
     const [novoStatus, setNovoStatus] = useState(false)
@@ -63,8 +46,24 @@ function ModalEdicao(props) {
         if (!novoBairro) {setBairro(cliente.bairro)}
         if (!novoCidade) {setCidade(cliente.cidade)}
         if (!novoUf) {setUf(cliente.uf)}
-
     })
+
+    useEffect(() => {
+        api
+    .get(`Clientes/${props.clienteId}`)
+    .then((response) => {setCliente(response.data)})
+    .catch((err) => {console.error(err)})
+    }, []);
+
+    useEffect(() => {
+        if (edicaoErro) {
+          const timer = setTimeout(() => {
+            setEdicaoErro(false);
+          }, 5000);
+    
+          return () => clearTimeout(timer);
+        }
+      }, [edicaoErro]);
 
     function handleChangeNome(event) {setNovoNome(true); setNome(event.target.value)}
     function handleChangeCelular(event) {setNovoCelular(true); setCelular(event.target.value)}
@@ -119,14 +118,12 @@ function ModalEdicao(props) {
     const handleAtualizarCliente = (id, statusModal) => {
         const data = new Date(dataNascimento)
         let dia = data.getDate()
-        let mes = data.getMonth()
+        let mes = (data.getMonth() + 1)
 
-        const dataNascimentoFormatada = `${data.getFullYear()}-${mes < 10 ? "0" + (mes + 1) : mes + 1}-${dia < 10 ? "0" + (dia + 1) : dia+1}`
+        const dataNascimentoFormatada = `${data.getFullYear()}-${mes < 10 ? "0" + mes : mes}-${dia < 10 ? "0" + dia : dia}`
 
         let booleanStatus = status === "ativo" || status === true ? true : false;
         let validacaoCelular = celular === "" ? "Não Informado": celular;
-
-        console.log(dataNascimentoFormatada);
 
         api
         .put(`/Clientes/${id}`, {
@@ -262,7 +259,11 @@ function ModalEdicao(props) {
                     </div>
                 </div>
                 <div className="button-salvar-edicao">
-                    <button className="salvar-btn" onClick={() => {handleAtualizarCliente(props.clienteId, props.statusModal)}}>Atualizar Dados</button>
+                    <button 
+                        className="salvar-btn" 
+                        onClick={() => {handleAtualizarCliente(props.clienteId, props.statusModal)}}
+                    >Atualizar Dados
+                    </button>
                 </div>
             </div>
         </div>

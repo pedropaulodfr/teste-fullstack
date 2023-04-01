@@ -63,8 +63,6 @@ function TabelaClientes(props) {
         
     }
 
-    console.log(clientes);
-
     return(
         <>
             {showModalEdicao && (
