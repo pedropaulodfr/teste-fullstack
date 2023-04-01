@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import './CadastroCliente.css';
+import { useNavigate  } from 'react-router-dom';
 import { Link } from 'react-router-dom'
+import './CadastroCliente.css';
 import '../ListaClientes/ListaClientes'
 import api from "../../api";
 import Alertas from "../Alertas/Alertas";
@@ -24,6 +25,8 @@ function CadastroCliente() {
     const [uf, setUf] = useState("")
     const [cadastroSucesso, setCadastroSucesso] = useState(false)
     const [cadastroErro, setCadastroErro] = useState(false)
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (cadastroSucesso || cadastroErro) {
@@ -103,7 +106,8 @@ function CadastroCliente() {
             uf: uf
         })
         .then((response) => {
-            setCadastroSucesso(true)
+            setCadastroSucesso(true);
+            navigate("/home")
         })
         .catch((err) => {
             console.error(err)

@@ -63,6 +63,8 @@ function TabelaClientes(props) {
         
     }
 
+    console.log(clientes);
+
     return(
         <>
             {showModalEdicao && (
@@ -90,7 +92,8 @@ function TabelaClientes(props) {
                 />
             )}
             <div className="tabela-clientes">
-                <table>
+                {clientes.length === 0 ? (<p>Nenhum cliente cadastrado</p>) : 
+                (<table>
                     <thead>
                         <tr>
                         <th>Nome</th>
@@ -151,7 +154,7 @@ function TabelaClientes(props) {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                </table>)}
             </div>
         </>
     )
